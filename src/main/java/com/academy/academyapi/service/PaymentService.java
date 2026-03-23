@@ -1,7 +1,9 @@
 package com.academy.academyapi.service;
 
+import com.academy.academyapi.controller.mapper.PaymentMapper;
 import com.academy.academyapi.domain.Payment;
 import com.academy.academyapi.domain.Student;
+import com.academy.academyapi.domain.dto.payment.CreatePaymentDTO;
 import com.academy.academyapi.domain.dto.payment.PaymentDTO;
 import com.academy.academyapi.repository.PaymentRepository;
 import com.academy.academyapi.repository.StudentRepository;
@@ -9,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +21,7 @@ public class PaymentService {
     private final StudentRepository studentRepository;
     private final PlanService planService;
 
-    public void registerPayment(PaymentDTO dto) {
+    public void registerPayment(CreatePaymentDTO dto) {
 
         if (dto.getStudentId() == null) {
             throw new IllegalArgumentException("StudentId is required");
@@ -43,5 +46,13 @@ public class PaymentService {
         );
 
         studentRepository.save(student);
+    }
+
+    public List<PaymentDTO> findByStudent(Long studentId) {
+
+        return paymentRepository.findByStudentId(studentId)
+                .stream()
+                .map(PaymentMapper::mapper)
+                .toList();
     }
 }

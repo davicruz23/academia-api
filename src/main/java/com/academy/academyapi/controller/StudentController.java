@@ -3,6 +3,7 @@ package com.academy.academyapi.controller;
 import com.academy.academyapi.domain.Student;
 import com.academy.academyapi.domain.dto.student.CreateStudentDTO;
 import com.academy.academyapi.domain.dto.student.StudentDTO;
+import com.academy.academyapi.domain.dto.student.UpdateStudentDTO;
 import com.academy.academyapi.service.StudentService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +37,21 @@ public class StudentController {
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}").buildAndExpand(service.create(dto).getId()).toUri();
         return ResponseEntity.created(uri).build();
+    }
+
+    @GetMapping("/overdue")
+    public List<StudentDTO> findOverdue() {
+        return service.findOverdue();
+    }
+
+    @PutMapping("/{id}")
+    public StudentDTO update(@PathVariable Long id,
+                             @RequestBody UpdateStudentDTO dto) {
+        return service.update(id, dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deactivate(@PathVariable Long id) {
+        service.deactivate(id);
     }
 }

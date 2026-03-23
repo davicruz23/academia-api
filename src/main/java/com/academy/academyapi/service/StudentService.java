@@ -7,6 +7,7 @@ import com.academy.academyapi.domain.Plan;
 import com.academy.academyapi.domain.Student;
 import com.academy.academyapi.domain.dto.student.CreateStudentDTO;
 import com.academy.academyapi.domain.dto.student.StudentDTO;
+import com.academy.academyapi.domain.dto.student.UpdateStudentDTO;
 import com.academy.academyapi.repository.PaymentRepository;
 import com.academy.academyapi.repository.PlanRepository;
 import com.academy.academyapi.repository.StudentRepository;
@@ -90,5 +91,46 @@ public class StudentService {
 
 
         return StudentMapper.mapper(saved);
+    }
+
+    public List<StudentDTO> findOverdue() {
+        return repository.findByNextDueDateBeforeAndActiveTrue(LocalDate.now())
+                .stream()
+                .map(StudentMapper::mapper)
+                .toList();
+    }
+
+    public StudentDTO update(Long id, UpdateStudentDTO dto) {
+
+        Student student = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+        if (dto.getName() != null) {
+            student.setName(dto.getName());
+        }
+
+        if (dto.getPhone() != null) {
+            student.setPhone(dto.getPhone());
+        }
+
+        if (dto.getPlanId() != null) {
+            Plan plan = planRepository.findById(dto.getPlanId())
+                    .orElseThrow(() -> new RuntimeException("Plan not found"));
+
+            student.setPlan(plan);
+        }
+
+        Student saved = repository.save(student);
+
+        return StudentMapper.mapper(saved);
+    }
+
+    public void deactivate(Long id) {
+        Student student = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+        student.setActive(false);
+
+        repository.save(student);
     }
 }
