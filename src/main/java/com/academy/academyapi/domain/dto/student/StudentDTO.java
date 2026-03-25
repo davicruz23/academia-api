@@ -19,7 +19,9 @@ public class StudentDTO {
 
     private Long id;
     private String name;
+    private String cpf;
     private String phone;
+    private String email;
     private LocalDate startDate;
     private LocalDate nextDueDate;
     private Boolean active;

@@ -11,6 +11,8 @@ public class CreateStudentDTO {
 
     private String name;
     private String phone;
+    private String email;
+    private String cpf;
     private Long planId;
     private CreateAddressDTO address;
 

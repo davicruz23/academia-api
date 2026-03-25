@@ -25,6 +25,10 @@ public class Student {
 
     private String phone;
 
+    private String email;
+
+    private String cpf;
+
     private LocalDate startDate;
 
     private LocalDate nextDueDate;

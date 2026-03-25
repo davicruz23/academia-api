@@ -69,6 +69,9 @@ public class StudentService {
 
         student.setName(dto.getName());
         student.setPhone(dto.getPhone());
+        student.setCpf(dto.getCpf());
+        student.setEmail(dto.getEmail());
+
         student.setPlan(plan);
         student.setAddress(address);
 
